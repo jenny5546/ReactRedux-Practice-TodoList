@@ -23,7 +23,6 @@ const deleteToDo = id => {
     };
 };
 
-
 //YOU SHOULD NEVER MUTATE STATE!!!!!
 const reducer = (state=[], action) => {
 
@@ -34,7 +33,8 @@ const reducer = (state=[], action) => {
             //all the contents in the array, and a new object
             //직접 mutate 하지마라. 
         case DELETE_TODO:
-            return state.filter(toDo => toDo.id !== action.id);
+            const cleaned = state.filter(toDo => toDo.id !== action.id);
+            return cleaned;
             //filter does not mutate the array, it returns a new array.
         default:
             return state;
@@ -58,7 +58,7 @@ const dispatchDeleteToDo = e => {
 const paintToDos = () => {
 
     const toDos = store.getState();
-    ul.innerHTML= ""
+    ul.innerHTML= ""  //얘가 없으면 중복으로 전 애들까지 같이 다시 repaint 
     toDos.forEach(toDo => {
         const li = document.createElement("li");
         const btn = document.createElement("button");
@@ -69,6 +69,7 @@ const paintToDos = () => {
         li.appendChild(btn);
         ul.appendChild(li);
     });
+
 };
 store.subscribe(paintToDos); //store가 바뀔 때마다 paintToDo 실행 
 
