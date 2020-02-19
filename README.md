@@ -1,6 +1,6 @@
 # React-Redux 연습하기
 
-## Redux 의 구조
+## Redux
 
 ### Redux 란 무엇인가:
 
@@ -37,3 +37,37 @@ splice 이런 것도 안돼.
 You should return the state not modifiy it!!!! 
 
 Creates a new array and RETURN을 해야한다. ex) filter: creates a new array  that passes the test. does not mutate the array itself. 
+
+
+
+## React-Redux
+
+### React-Redux 연결 방법 
+
+''' 
+    /* HOW TO GET STATE FROM YOUR STORE??? */
+    //get the current state from the store to our home
+
+    function mapStateToProps(state) {
+        return { toDos: state };
+    }
+
+    //Connect allows us to connect the redux store and our components
+
+    export default connect(mapStateToProps, mapDispatchToProps)(Home);
+'''
+
+> store.getState()를 바닐라.js에서 했다면, component에서 redux에 있는 state를 갖고 오기 위해서는 'connect'라는 것을 통해서 할 수 있다. 갖고오는 것을 mapStateToProps라는 함수를 통해서 할 수 있는데, 이 Home.js라면 Home이라는 component에다가 toDo라는 props를 추가하고 그 props를 state로 설정한다. 
+
+
+'''
+    /* HOW TO Dispatch Redux in React */
+
+    function mapDispatchToProps(dispatch) {
+        
+        return {
+            addToDo: text => dispatch(actionCreators.addToDo(text)) // a function addToDo created
+        };
+    }
+
+'''
