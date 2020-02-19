@@ -1,3 +1,124 @@
+import { createStore } from "redux";
+
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
+
+const ADD_TODO = "ADD_TODO";
+const DELETE_TODO = "DELETE_TODO";
+
+// Action
+const addToDo= text => {
+    return {
+        type: ADD_TODO,
+        text
+    };
+};
+
+// Action
+const deleteToDo = id => {
+    return {
+        type: DELETE_TODO, 
+        id
+    };
+};
+
+
+//YOU SHOULD NEVER MUTATE STATE!!!!!
+const reducer = (state=[], action) => {
+
+    switch(action.type){
+        case ADD_TODO:
+            return [{ text: action.text, id: Date.now() }, ...state ];
+            // ... -> es6 spread
+            //all the contents in the array, and a new object
+            //직접 mutate 하지마라. 
+        case DELETE_TODO:
+            return state.filter(toDo => toDo.id !== action.id);
+            //filter does not mutate the array, it returns a new array.
+        default:
+            return state;
+    }
+
+};
+
+const store= createStore(reducer);
+
+//Dispatch Action 
+const dispatchAddToDo = text => {
+    store.dispatch(addToDo(text));
+}
+
+//Dispatch Action 
+const dispatchDeleteToDo = e => {
+    const id = parseInt(e.target.parentNode.id);
+    store.dispatch(deleteToDo(id));
+}
+
+const paintToDos = () => {
+
+    const toDos = store.getState();
+    ul.innerHTML= ""
+    toDos.forEach(toDo => {
+        const li = document.createElement("li");
+        const btn = document.createElement("button");
+        btn.innerText = "DEL";
+        btn.addEventListener("click", dispatchDeleteToDo);
+        li.id = toDo.id;
+        li.innerText = toDo.text;
+        li.appendChild(btn);
+        ul.appendChild(li);
+    });
+};
+store.subscribe(paintToDos); //store가 바뀔 때마다 paintToDo 실행 
+
+const onSubmit = e => {
+    e.preventDefault();
+    const toDo = input.value;
+    input.value = ""; //submit 이후 다시 초기화하는 부분 
+    dispatchAddToDo(toDo);
+};
+
+
+form.addEventListener("submit", onSubmit);
+
+
+
+
+
+/*
+
+CH1. COUNTER 
+< Vanilla VER. > 
+
+let count = 0; // "state": data that changes in you application
+
+number.innerText = count;  // Innertext을 Count로 초기 설정. 
+
+const updateText= () => {
+    number.innerText = count; // Innertext를 계속해서 update 해주는 함수 
+}
+
+const handleAdd = () => {
+    count++; 
+    updateText();
+}
+
+const handleMinus = () => {
+    count--;
+    updateText();
+}
+
+add.addEventListener("click", handleAdd);
+minus.addEventListener("click", handleMinus);
+
+*/
+
+
+/* 
+CH1. COUNTER 
+< REDUX VER. >
+
 import { createStore } from "redux"; // Store basically creates space for your data
 
 const add = document.getElementById("add");
@@ -27,6 +148,8 @@ const countModifier = (count = 0, action) => { // state=0 : initializing your st
             return count;
     }
 }; 
+
+
 //whatever the modifier(reducer)  returns, that is going to be your data 
 
 const countStore= createStore(countModifier);
@@ -41,31 +164,32 @@ add.addEventListener("click", ()=>countStore.dispatch({type: ADD}));
 minus.addEventListener("click", ()=>countStore.dispatch({type: MINUS}));
 //dispatch an action= this will call the countModifier
 
+*/
 
 
 /*
+CH2. TODO
+< Vanilla VER. >
 
-<NON-REDUX VERSION> 
+const form = document.querySelector("form");
+const input = document.querySelector("input");
+const ul = document.querySelector("ul");
 
-let count = 0; // "state": data that changes in you application
 
-number.innerText = count;  // Innertext을 Count로 초기 설정. 
+const createToDo = toDo => {
+    const li = document.createElement("li");
+    li.innerText = toDo;
+    ul.appendChild(li);
+};
 
-const updateText= () => {
-    number.innerText = count; // Innertext를 계속해서 update 해주는 함수 
-}
+const onSubmit = e => {
+    e.preventDefault();
+    const toDo = input.value;
+    input.value = "";
+    createToDo(toDo);
+};
 
-const handleAdd = () => {
-    count++; 
-    updateText();
-}
+form.addEventListener("submit", onSubmit);
 
-const handleMinus = () => {
-    count--;
-    updateText();
-}
-
-add.addEventListener("click", handleAdd);
-minus.addEventListener("click", handleMinus);
 
 */

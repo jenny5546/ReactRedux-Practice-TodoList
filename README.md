@@ -3,7 +3,7 @@
 ## Redux 의 구조
 
 ### Redux 란 무엇인가:
- 
+
 Redux: State를 한 곳에, 한 번에 관리해주는 것이 장점이라고 계속 이야기하는 듯. 
 Redux 요소에는 Store, Action, Reducer라고 볼 수 있는데, 익숙한 React State에 빗대서 이야기하자면 
 1. Store = React State 랑 같은 개념 
@@ -21,3 +21,19 @@ Store에 내 money라는 data가 있고, action이 'buy' 같은 거라면, reduc
 
 Dispatch란? Sending actions to the Reducer
 Subscribe란? Listens to changes of the data (store)
+
+
+
+### 3 Main Principles of REDUX
+
+1. Single State of Truth
+2. State is read-only: you are not going to store.getCurrent() 이런식으로 하면 안돼 action 을 통해서만!!
+3. DO NOT MUTATE! 
+-> Mutation이란? 
+const friends = ["아영"]
+friends.push("수민")
+splice 이런 것도 안돼. 
+
+You should return the state not modifiy it!!!! 
+
+Creates a new array and RETURN을 해야한다. ex) filter: creates a new array  that passes the test. does not mutate the array itself. 
