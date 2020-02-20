@@ -24,3 +24,4 @@ function mapDispatchToProps(dispatch, ownProps) {
 
 //state는 갖고 올 필요없음 그래서 null
 export default connect(null, mapDispatchToProps)(ToDo);
+//hi
